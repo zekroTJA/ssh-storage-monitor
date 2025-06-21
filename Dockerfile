@@ -5,8 +5,8 @@ COPY Cargo.toml Cargo.lock ./
 COPY src ./src
 RUN cargo build --release
 
-FROM alpine
+FROM alpine:latest
 RUN apk add --no-cache coreutils
-COPY --from=build /app/target/release/ssh-storage-monitor /usr/local/bin/ssh-storage-monitor
+COPY --from=build /build/target/release/ssh-storage-monitor /usr/local/bin/ssh-storage-monitor
 EXPOSE 80
 ENTRYPOINT [ "/usr/local/bin/ssh-storage-monitor" ]
