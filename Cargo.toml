@@ -1,0 +1,19 @@
+[package]
+name = "ssh-storage-monitor"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.98"
+axum = "0.8.4"
+clap = { version = "4.5.40", features = ["derive", "env"] }
+dirs = "6.0.0"
+dotenv = "0.15.0"
+figment = { version = "0.10.19", features = ["yaml", "toml", "env"] }
+rayon = "1.10.0"
+serde = { version = "1.0.219", features = ["derive"] }
+ssh2 = { version = "0.9.5", features = ["vendored-openssl"] }
+tokio = { version = "1.45.1", features = ["net", "rt", "rt-multi-thread"] }
+tracing = "0.1.41"
+tracing-subscriber = "0.3.19"
+# openssl = { version = "0.10.73", features = ["vendored"] }
