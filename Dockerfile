@@ -8,5 +8,5 @@ RUN cargo build --release
 FROM alpine:latest
 RUN apk add --no-cache coreutils
 COPY --from=build /build/target/release/ssh-storage-monitor /usr/local/bin/ssh-storage-monitor
-EXPOSE 80
+EXPOSE 9091
 ENTRYPOINT [ "/usr/local/bin/ssh-storage-monitor" ]

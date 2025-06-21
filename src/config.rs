@@ -19,7 +19,7 @@ macro_rules! local_config_name {
 }
 
 fn default_bind_address() -> String {
-    "0.0.0.0:80".into()
+    "0.0.0.0:9091".into()
 }
 
 #[derive(Deserialize)]
