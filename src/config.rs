@@ -1,4 +1,5 @@
 use anyhow::Result;
+use core::fmt;
 use figment::Figment;
 use figment::providers::{Env, Format, Toml, Yaml};
 use serde::Deserialize;
@@ -23,19 +24,39 @@ fn default_bind_address() -> String {
 }
 
 #[derive(Deserialize)]
+pub struct Secret<T>(T);
+
+impl<T> fmt::Debug for Secret<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "***REDACTED***")
+    }
+}
+
+impl<T> Deref for Secret<T>
+where
+    T: Deref,
+{
+    type Target = T::Target;
+
+    fn deref(&self) -> &Self::Target {
+        self.0.deref()
+    }
+}
+
+#[derive(Deserialize, Debug)]
 #[serde(untagged)]
 pub enum AuthMethod {
     Password {
-        password: String,
+        password: Secret<String>,
     },
     Keyfile {
         private_key: PathBuf,
         public_key: Option<PathBuf>,
-        passphrase: Option<String>,
+        passphrase: Option<Secret<String>>,
     },
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct Server {
     pub id: String,
     pub address: String,
@@ -44,7 +65,7 @@ pub struct Server {
     pub extra_labels: Option<HashMap<String, String>>,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct Config {
     #[serde(default = "default_bind_address")]
     pub bind_address: String,

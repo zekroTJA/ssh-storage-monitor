@@ -43,10 +43,16 @@ async fn main() -> Result<()> {
         .with_writer(std::io::stdout)
         .init();
 
+    tracing::debug!("read config={config:#?}");
+
     let app = Router::new()
         .route("/metrics", get(metrics))
         .with_state(config.clone());
 
+    tracing::info!(
+        "Starting metrics web server on {} ...",
+        &config.bind_address
+    );
     let listener = tokio::net::TcpListener::bind(&config.bind_address).await?;
     axum::serve(listener, app).await?;
 
@@ -98,6 +104,8 @@ fn disk_usage_to_metrics(server: &Server, disk_usage: &DiskUsage) -> String {
 }
 
 async fn metrics(State(cfg): State<Arc<Config>>) -> (StatusCode, String) {
+    tracing::debug!("requesting metrics ...");
+
     let results: Vec<String> = cfg
         .servers
         .par_iter()
@@ -105,8 +113,9 @@ async fn metrics(State(cfg): State<Arc<Config>>) -> (StatusCode, String) {
         .filter_map(|(server, res)| match res {
             Err(err) => {
                 tracing::error!(
-                    "failed getting disk usage for server {}: {}",
+                    "failed getting disk usage for server {} ({}): {}",
                     server.id,
+                    server.address,
                     err
                 );
                 None
