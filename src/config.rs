@@ -85,7 +85,7 @@ impl Config {
             .ok_or_else(|| anyhow::anyhow!("could not resolve project directories"))?;
 
         Ok(Figment::new()
-            .merge(Env::prefixed("SSM"))
+            .merge(Env::prefixed("SSM_"))
             .merge(Toml::file(local_config_name!(".toml")))
             .merge(Yaml::file(local_config_name!(".yaml")))
             .merge(Toml::file(dirs.join("config.toml")))
