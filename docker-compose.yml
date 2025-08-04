@@ -1,0 +1,24 @@
+services:
+  ssh-server:
+    image: lscr.io/linuxserver/openssh-server:latest
+    environment:
+      USER_PASSWORD: foo
+      USER_NAME: foo
+      PASSWORD_ACCESS: "true"
+
+  ssm:
+    build: .
+    environment:
+      SSM_BIND_ADDRESS: 0.0.0.0:9091
+      SSM_LOG_LEVEL: debug
+      SSM_SERVERS: >-
+        [
+          {
+            id=test,
+            address=ssh-server:2222,
+            username=foo,
+            auth={password=foo}
+          }
+        ]
+    ports:
+      - 19091:9091
