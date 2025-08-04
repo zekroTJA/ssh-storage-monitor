@@ -1,4 +1,4 @@
-FROM rust:alpine AS build
+FROM rust:1.88-alpine AS build
 WORKDIR /build
 RUN apk add --no-cache musl-dev perl make
 COPY Cargo.toml Cargo.lock ./
