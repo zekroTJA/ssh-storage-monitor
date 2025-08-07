@@ -53,3 +53,9 @@ ssm_blocks{id="storage-box",address="u123456.your-storagebox.de:23",filesystem="
 ssm_available{id="storage-box",address="u123456.your-storagebox.de:23",filesystem="u123456",mount="/home"} 326839040
 ssm_used{id="storage-box",address="u123456.your-storagebox.de:23",filesystem="u123456",mount="/home"} 746656512
 ```
+
+## Grafana Dashboard
+
+[Here](config/grafana/dashboard.json) you can find a preset Grafana dashboard which I am using to monitor my personal remote storages.
+
+![](.github/media/dashboard-screenshot.png)
